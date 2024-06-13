@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp_Revamp11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body class="bg-black flex flex-col justify-center items-center h-screen">
+    <div class="bg-zinc-200 w-[50%] flex flex-col justify-center items-center gap-4 p-5 rounded-lg">
+        <h1 class="font-['Poppins'] text-3xl font-extrabold ">Update Password</h1>
+        <form id="updatePasswordForm" action="" class="font-['Poppins'] flex flex-col justify-center items-center gap-4 ">
+           <div class="flex flex-col gap-4">
+                <div>
+                    <p class="text-xs font-medium">NEW PASSWORD</p>
+                    <input id="newPassword" type="password" class="rounded-md" required>
+                    <p id="newPasswordErrMsg" style="color: red;"></p>
+                </div>
+                <div>
+                    <p class="text-xs font-medium">CONFIRM PASSWORD</p>
+                    <input id="confirmPassword" type="password" class="rounded-md" required>
+                    <p id="confirmPasswordErrMsg" style="color: red;"></p>
+                </div>
+            </div>
+            <div>            
+                <button id="updateBtn" type="submit" class="bg-[#007AF7] text-white font-['Poppins'] px-3 py-1 rounded-lg">Update</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        const newPassword = document.getElementById("newPassword");
+        const confirmPassword = document.getElementById("confirmPassword");
+        const newPasswordErrMsg = document.getElementById("newPasswordErrMsg");
+        const confirmPasswordErrMsg = document.getElementById("confirmPasswordErrMsg");
+        const updatePasswordForm = document.getElementById("updatePasswordForm");
+
+        const validateForm = (newPassword, confirmPassword) => {
+            const regex = /^[a-zA-Z0-9_]+$/;
+            let isValid = true;
+            
+            // Clear previous error messages
+            newPasswordErrMsg.textContent = "";
+            confirmPasswordErrMsg.textContent = "";
+
+            if (!regex.test(newPassword)) {
+                newPasswordErrMsg.textContent = "Invalid password. Only letters, numbers, and underscores are allowed.";
+                isValid = false;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                confirmPasswordErrMsg.textContent = "Passwords do not match.";
+                isValid = false;
+            }
+
+            return isValid;
+        };
+
+        newPassword.addEventListener("blur", (e) => {
+            if (e.target.value.trim() === "") {
+                newPasswordErrMsg.textContent = "* Required";
+            }
+        });
+
+        confirmPassword.addEventListener("blur", (e) => {
+            if (e.target.value.trim() === "") {
+                confirmPasswordErrMsg.textContent = "* Required";
+            }
+        });
+
+        updatePasswordForm.addEventListener("submit", (event) => {
+            event.preventDefault(); // Stops refreshing
+            const newPasswordValue = newPassword.value;
+            const confirmPasswordValue = confirmPassword.value;
+            if (validateForm(newPasswordValue, confirmPasswordValue)) {
+                // Perform the update password action here, such as sending data to the server
+                console.log("Form is valid. Submitting...");
+            }
+
+        });
+    </script>
+</body>
+</html>

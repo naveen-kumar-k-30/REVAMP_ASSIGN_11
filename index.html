@@ -7,12 +7,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
-<body class="bg-black flex flex-col justify-center items-center h-screen">
-        <div class="bg-zinc-200  sm:h-[30%] sm:w-[30%] md:h-[40%] md:w-[40%] flex flex-col justify-center items-center gap-4 px-5 py-3 shadow-xl shadow-gray-500 rounded-lg">
-        <h1 class="font-['Poppins'] text-3xl font-extrabold ">Update Password</h1>
-        <form id="updatePasswordForm" action="" class="font-['Poppins'] flex flex-col justify-center items-center gap-4 ">
+<body class="bg-black flex flex-col justify-center items-center h-screen 2xl:container">
+    <div class="bg-zinc-200 sm:h-[30%] sm:w-[30%] md:h-[40%] md:w-[40%] flex flex-col justify-center items-center gap-4 px-5 py-3 shadow-xl shadow-gray-500 rounded-lg">
+        <h1 class="font-['Poppins'] text-3xl font-extrabold">Update Password</h1>
+        <form id="updatePasswordForm" action="" class="font-['Poppins'] flex flex-col justify-center items-center gap-4">
            <div class="flex flex-col gap-4">
                 <div>
                     <p class="text-xs font-medium">NEW PASSWORD</p>
@@ -32,6 +35,24 @@
     </div>
     
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD2Ks8YaGe0ITfFZ6icS1_voHt0zjo3GeM",
+            authDomain: "update-passwords.firebaseapp.com",
+            databaseURL: "https://update-passwords-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "update-passwords",
+            storageBucket: "update-passwords.appspot.com",
+            messagingSenderId: "677106895864",
+            appId: "1:677106895864:web:43697bd361b7c84827240d"
+        };
+
+        // Initialize Firebase if not already initialized
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        } else {
+            firebase.app(); // if already initialized, use that one
+        }
+
         const newPassword = document.getElementById("newPassword");
         const confirmPassword = document.getElementById("confirmPassword");
         const newPasswordErrMsg = document.getElementById("newPasswordErrMsg");
@@ -71,6 +92,18 @@
             }
         });
 
+        const savetodb = (password) => {
+            const db = firebase.database().ref("ReqForm");
+            var newRef = db.push();
+            newRef.set({ Password: password }, (error) => {
+                if (error) {
+                    alert("Password upload failed: " + error.message);
+                } else {
+                    alert("Password uploaded successfully");
+                }
+            });
+        }
+
         updatePasswordForm.addEventListener("submit", (event) => {
             event.preventDefault(); // Stops refreshing
             const newPasswordValue = newPassword.value;
@@ -78,10 +111,8 @@
             if (validateForm(newPasswordValue, confirmPasswordValue)) {
                 // Perform the update password action here, such as sending data to the server
                 console.log("Form is valid. Submitting...");
-                alert("password accepted");
-
+                savetodb(confirmPasswordValue);
             }
-
         });
     </script>
 </body>

@@ -100,6 +100,7 @@
                     alert("Password upload failed: " + error.message);
                 } else {
                     alert("Password uploaded successfully");
+                    updatePasswordForm.reset(); // Reset the form after successful submission
                 }
             });
         }
